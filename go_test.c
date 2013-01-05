@@ -18,7 +18,7 @@ int main(void)
 	nv_max = nv_search(1, max);
 
 	printf("\tMaximum TPM NV SIZE = %d Bytes\n", nv_max);
-/*	
+	
 	BYTE* data2write = (BYTE*) malloc(nv_max);
 	
 	if (data2write==NULL){
@@ -31,7 +31,7 @@ int main(void)
 	free(data2write);
 	
 	data2write=NULL;
-*/
+
 }
 
 /* Search for max NV size */
@@ -655,28 +655,15 @@ int nv_stress(BYTE data2write[], int size)
 
 	if(ctr%10000==0){
 		
-	int i=memcmp(data2write, data2read, size);
+		int i=memcmp(data2write, data2read, size);
 	
-	if(i!=0){
+		if(i!=0){
 		
 		printf("R/W DATA are NOT matched!\n");
 		exit(1);
-	}
-		
-/*		int z;
-		for(z=0; z<size; z++){
-			
-			if(data2write[z] != data2read[z])
-			//if ( ((data2write[z] & 0x000000FF) ^ (*(data2read+z))) != 0 ) 
-			{
-			printf("%d Byte is WRONG!\t", z+1);
-			printf("Write value is %X\t", data2write[z]);
-			printf("Read value is %X\n", *(data2read+z));
-			exit(-1);
-			}
 		
 		}
-*/
+		
 		printf("\tR/W DATA are Matched!\n");
 	}
 	
