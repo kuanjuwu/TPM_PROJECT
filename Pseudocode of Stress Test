@@ -1,0 +1,41 @@
+#define NV_SIZE 1280
+void do_test()
+{
+        char buffer [NV_SIZE];
+                if(FileExisits(ctrFile))
+                        ctr=ReadFromFile(ctrFile);
+else
+                        ctr=1;
+                 dby_print("Resuming from", ctr);
+                 do_loop();
+}
+void do_loop(ctr)
+{ int time=getSystemTime();
+        while(not error)
+         {
+                WritetoDisk(ctr);
+                FlushdiskCaches();
+                generate_data(buffer);
+                NV_Write(NV_SIZE,buffer);
+                TestPayload=NV_Read(NV_SIZE);
+                if(TestPayload!=NVPayload)
+}
+}
+void generate_data(buffer)
+{
+}
+static char flag=0xFF;
+memset(buffer, flag, NV_SIZE);
+flag=flag?0:0xFF;
+5
+{
+} ctr++;
+int current_time=getSystemTime();
+error(current_time, ctr);
+void error(int time, int counter)
+{
+}
+fprintf(stderr, "The test runs for %d seconds\n",
+   time/1000);
+fprintf(stderr, "The test stops at the %d iteration
+   \n", counter);
