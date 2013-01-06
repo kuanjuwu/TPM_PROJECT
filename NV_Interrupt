@@ -1,0 +1,19 @@
+/*Continue the counter if any interruption*/
+int ctr;  					
+FILE logFile;
+
+/*Open the file ctr.log for reading*/
+logFile = fopen("/tmp/ctr.log","r");			
+
+/*Reset the counter if can not read the file*/
+if(logFile == NULL){
+	ctr=0;							
+	printf("Stress test start from %d", ctr);
+}
+
+/*Read the counter from file and continue counting*/
+else{
+	fscanf(logFile,"%d",&ctr);		 
+	printf("Stress test start from %d", ctr);		
+	fclose(logFile);
+}
