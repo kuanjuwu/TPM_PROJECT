@@ -1,0 +1,42 @@
+int nv_max;
+int max=100;
+
+/*Double the searching NV size when the space is available*/
+while( nv_define(max)==0 ){ max*=2; }  	
+
+/*Start searching NV size between 1 to max*/
+nv_max = nv_search(1, max);
+printf("Maximum TPM NV SIZE=%d bytes\n", nv_max);
+
+/*Allocate nv_max amount of data and check if it's NULL*/
+char* data_to_write = (char*) malloc(nv_max);
+if (data_to_write == NULL) {
+	fprintf(stderr,"NULL PTR\n");
+	exit(1);
+  }
+
+/*Run NV stress test with nv_max amount of data*/
+nv_stress(data_to_write, nv_max);		
+free(data_to_write);         
+data_to_write=NULL;
+
+/*Search for maximum NV size between low to high*/
+int nv_search(int lo, int hi){
+	static int i = 0;
+	 printf("Counter=%d, lo=%ld, hi=%ld\n", ++i, lo, hi);
+	 int mid = lo+(hi-lo)/2;
+	 if(nv_max_hit(mid)==0){
+		 return mid;}
+	 else if(nv_define(mid)==0)
+		 nv_search(mid, hi);
+	 else
+		nv_search(lo, mid);
+}
+
+/*Return 0 when we find the max available NV size, else return 1*/
+int nv_max_hit(int i){	
+	if (nv_define(i)==0&&nv_define(i+1)!=0){	
+		return 0;}
+     	else
+		 return 1;
+}
