@@ -1,0 +1,31 @@
+/* Create a NVRAM object */
+result = Tspi_Context_CreateObject(hContext, TSS_OBJECT_TYPE_NV, 0, &hNVStore);
+if(result!=TSS_SUCCESS) { print_error("Tspi_Context_CreateObject", result); exit(result); }
+
+/* Set its arbitrary index to 0x00011133 */
+result = Tspi_SetAttribUint32(hNVStore, TSS_TSPATTRIB_NV_INDEX, 0, 0x00011133);
+if (result!=TSS_SUCCESS) { print_error("Tspi_SetAttribUint32 index %x\n",result); exit(result); }
+
+/* Set its Attributes, and it is only writeable by the owner */
+result = Tspi_SetAttribUint32(hNVStore,TSS_TSPATTRIB_NV_PERMISSIONS, 0, TPM_NV_PER_OWNERWRITE);
+if (result!=TSS_SUCCESS) { print_error("Tspi_SetAttribUint32 auth %x\n",result); exit(result); }
+
+/* Next it holds i bytes of data */
+result = Tspi_SetAttribUint32(hNVStore, TSS_TSPATTRIB_NV_DATASIZE,0, i);
+if (result!=TSS_SUCCESS) { print_error("Tspi_SetAttribUint32 size%x\n",result); exit(result); }
+
+/* In order to either instantiate or write to the NVRAM location in NVRAM, owner_auth is required.
+In the case of NVRAM, owner_auth comes from the TPM's policy object. We will put it in here. */
+
+/* First we get a TPM policy object*/
+result = Tspi_GetPolicyObject(hTPM, TSS_POLICY_USAGE, &hTPMPolicy);
+if (result!=TSS_SUCCESS) { print_error("Tspi_GetPolicyObject: %x\n",result); exit(result); }
+
+/* Then we set the Owner's Authorization as its secret */
+result = Tspi_Policy_SetSecret(hTPMPolicy, TSS_SECRET_MODE_PLAIN,  auth_lenth, auth );
+if (result!=TSS_SUCCESS) { print_error("Tspi_Policy_SetSecret: %x\n",result); exit(result); }
+
+/* Create the NVRAM space */
+result = Tspi_NV_DefineSpace(hNVStore, 0, 0);
+if (result!=TSS_SUCCESS) { print_error("Tspi_NV_DefineSpace: %x\n",result); exit(result); }
+
