@@ -1,0 +1,25 @@
+/*Compare the Write and Read data*/
+int nv_max;
+char data_to_write[nv_max];
+char *data_to_read;
+
+int i = memcmp(data_to_write, data_to_read, nv_max);
+
+if ( i != 0 ) {             
+  printf("Read/Write data are NOT matched!\n"); 
+	exit(1);
+}
+else{
+	printf("Read/Write data are matched!\n");
+}
+
+/* Log stress test counter to file */
+int ctr;						
+FILE  *cFile = fopen("/tmp/ctr.log", "w"); 	
+if(cFile == NULL)
+	exit(1);
+else{
+	fprintf(cFile, "%d\n", ctr);
+	fclose(cFile);
+}
+ctr++;
