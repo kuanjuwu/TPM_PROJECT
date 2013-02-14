@@ -21,4 +21,3 @@ cd  $THEPATH
                 date > $LOGPATH/$LOGFILE && date > $LOGPATH/$ERR_LOGFILE
                ./go_test >$LOGPATH/$LOGFILE 2>$LOGPATH/$ERR_LOGFILE
         fi
-\end{lstlisting}
